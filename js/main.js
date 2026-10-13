@@ -13,7 +13,7 @@ const errorMessage = document.querySelector("#error");
 // Funktion för att validera formuläret
 function validateForm() {
     if (searchInput.value.trim() === "") { // Tar bort blanksteg och kontrollerar om namn är tomt
-        errorMessage.textContent = "Vänligen ange en sökterm.";
+        errorMessage.textContent = "Vänligen ange ett sökord.";
         return false;
     } else {
         errorMessage.textContent = "";
@@ -21,13 +21,20 @@ function validateForm() {
     }
 }
 
+// Funktion för att läsa sökordet från inmatningsfältet
+function readInput() {
+    const searchTerm = searchInput.value.trim();
+    console.log("Sökterm:", searchTerm);
+}
+
 // Eventlyssnare för formuläret
 searchForm.addEventListener("submit", (event) => {
     // När formuläret skickas:
     event.preventDefault();
-    // - validera inmatningen
+    // - validera inmatnignen
     if (validateForm()) {
         // - om valideringen lyckas
         console.log("Formuläret är giltigt.");
+        readInput();
     };
 });
