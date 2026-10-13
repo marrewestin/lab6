@@ -15,7 +15,7 @@ const recipeContainer = document.querySelector("#recipe");
 // Funktion för att validera formuläret
 function validateForm() {
     if (searchInput.value.trim() === "") { // Tar bort blanksteg och kontrollerar om fältet är tomt
-        errorMessage.textContent = "Vänligen ange ett sökord."; // Skriver ut felmeddelande om fältet är tomt
+        errorMessage.textContent = "Du måste fylla i en sökfras!"; // Skriver ut felmeddelande om fältet är tomt
         return false;
     } else {
         errorMessage.textContent = ""; // Rensar felmeddelandet om fältet inte är tomt
@@ -41,7 +41,7 @@ async function fetchRecipes() {
 
 function checkRecipes(data) {
     if (data.recipes.length === 0) { // Kontrollerar om inga recept hittades
-        messageContainer.textContent = "Inga recept hittades för det angivna sökordet.";
+        messageContainer.textContent = "Inget recept hittades, prova en ny sökfras ...";
     } else {
         displayRecipe(data); // Anropar funktionen för att visa resultaten
     }
@@ -49,9 +49,44 @@ function checkRecipes(data) {
 
 function displayRecipe(data) {
     messageContainer.textContent = ""; // Rensar eventuella tidigare meddelanden
-    recipeContainer.innerHTML = "Visar resultat:"; // 
-    console.log("Visar resultat:", data);
+    console.log(data.recipes[0]); // Loggar det första receptet i konsolen
+    const recipe = data.recipes[0]; // Sparar det första receptet i en variabel
+    recipeContainer.innerHTML = `<article>
+        <h3>${recipe.name}</h3>
+        <img src="${recipe.image}" alt="${recipe.name}">
+        <div class="recipe-info">
+            <p><strong>Servings:</strong> ${recipe.servings}</p>
+            <p><strong>Prep time:</strong> ${recipe.prepTimeMinutes} minutes</p>
+            <p><strong>Cooking time:</strong> ${recipe.cookTimeMinutes} minutes</p>
+            <p><strong>Difficulty:</strong> ${recipe.difficulty}</p>
+        </div>
+</article> `;
 };
+/* 
+<article>
+    <h3>Receptets namn</h3>
+
+    <img src="..." alt="...">
+
+        <div class="recipe-info">
+            <p><strong>Servings:</strong> 4</p>
+            <p><strong>Prep time:</strong> 10 minutes</p>
+            <p><strong>Cooking time:</strong> 20 minutes</p>
+            <p><strong>Difficulty:</strong> Easy</p>
+        </div>
+
+        <h4>Ingredients</h4>
+        <ul>
+            <li>Ingredient 1</li>
+            <li>Ingredient 2</li>
+        </ul>
+
+        <h4>Instructions</h4>
+        <ol>
+            <li>First step.</li>
+            <li>Second step.</li>
+        </ol>
+</article> */
 
 // Eventlyssnare för formuläret
 searchForm.addEventListener("submit", (event) => {
