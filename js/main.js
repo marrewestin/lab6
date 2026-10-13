@@ -21,10 +21,19 @@ function validateForm() {
     }
 }
 
-// Funktion för att läsa sökordet från inmatningsfältet
-function readInput() {
-    const searchTerm = searchInput.value.trim();
-    console.log("Sökterm:", searchTerm);
+// Funktion för att hämta data från API:et
+async function fetchData() {
+    try {
+        const searchTerm = searchInput.value.trim();
+        const response = await fetch(`https://dummyjson.com/recipes/search?q=${searchTerm}`);
+        if (!response.ok) {
+            throw new Error("Något gick fel med API-anropet.");
+        }
+        const data = await response.json();
+        console.log("Data från API:", data);
+    } catch (error) {
+        console.error("Fel vid hämtning av data:", error);
+    }
 }
 
 // Eventlyssnare för formuläret
@@ -35,6 +44,6 @@ searchForm.addEventListener("submit", (event) => {
     if (validateForm()) {
         // - om valideringen lyckas
         console.log("Formuläret är giltigt.");
-        readInput();
+        fetchData();
     };
 });
