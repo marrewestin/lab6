@@ -18,13 +18,12 @@ function validateForm() {
         errorMessage.textContent = "Du måste fylla i en sökfras!"; // Skriver ut felmeddelande om fältet är tomt
         return false;
     } else {
-        errorMessage.textContent = ""; // Rensar felmeddelandet om fältet inte är tomt
         return true;
     }
 }
 
 // Funktion för att hämta data från API:et
-async function fetchRecipes() {
+async function fetchRecipe() {
     try {
         const searchTerm = searchInput.value.trim(); // Tar bort blanksteg och sparar sökordet
         const response = await fetch(`https://dummyjson.com/recipes/search?q=${searchTerm}`); // Anropar API:et med sökordet
@@ -44,12 +43,11 @@ function checkRecipes(data) {
         messageContainer.textContent = "Inget recept hittades, prova en ny sökfras ...";
     } else {
         displayRecipe(data); // Anropar funktionen för att visa resultaten
+        console.log("Recept hittades:", data.recipes); // Loggar de hittade recepten
     }
 }
 
 function displayRecipe(data) {
-    messageContainer.textContent = ""; // Rensar eventuella tidigare meddelanden
-    console.log(data.recipes[0]); // Loggar det första receptet i konsolen
     const recipe = data.recipes[0]; // Sparar det första receptet i en variabel
     recipeContainer.innerHTML = `<article>
         <h3>${recipe.name}</h3>
@@ -60,42 +58,30 @@ function displayRecipe(data) {
             <p><strong>Cooking time:</strong> ${recipe.cookTimeMinutes} minutes</p>
             <p><strong>Difficulty:</strong> ${recipe.difficulty}</p>
         </div>
-</article> `;
-};
-/* 
-<article>
-    <h3>Receptets namn</h3>
-
-    <img src="..." alt="...">
-
-        <div class="recipe-info">
-            <p><strong>Servings:</strong> 4</p>
-            <p><strong>Prep time:</strong> 10 minutes</p>
-            <p><strong>Cooking time:</strong> 20 minutes</p>
-            <p><strong>Difficulty:</strong> Easy</p>
-        </div>
-
         <h4>Ingredients</h4>
         <ul>
-            <li>Ingredient 1</li>
-            <li>Ingredient 2</li>
+            ${recipe.ingredients.map(ingredient => `<li>${ingredient}</li>`).join("")}
         </ul>
-
         <h4>Instructions</h4>
         <ol>
-            <li>First step.</li>
-            <li>Second step.</li>
+            ${recipe.instructions.map((step) => `<li>${step}</li>`).join("")}
         </ol>
-</article> */
+</article> `;
+};
 
 // Eventlyssnare för formuläret
 searchForm.addEventListener("submit", (event) => {
     // När formuläret skickas:
     event.preventDefault();
+    // - rensa eventuella tidigare recept
+    recipeContainer.innerHTML = "";
+    // - rensa eventuella tidigare meddelanden
+    errorMessage.textContent = "";
+    messageContainer.textContent = "";
     // - validera inmatnignen
     if (validateForm()) {
         // - om valideringen lyckas
         console.log("Formuläret är giltigt.");
-        fetchRecipes();
+        fetchRecipe();
     };
 });
