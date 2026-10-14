@@ -34,7 +34,7 @@ async function fetchRecipe() {
         checkRecipes(data); // Anropar funktionen för att kontrollera om det finns recept att visa
     } catch (error) {
         console.error("Fel vid hämtning av data:", error); // Loggar eventuella fel som uppstår vid hämtning av data
-
+        messageContainer.textContent = error.message; // Visar felmeddelandet i meddelandefältet
     }
 }
 
