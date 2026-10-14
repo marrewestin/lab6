@@ -38,15 +38,16 @@ async function fetchRecipe() {
     }
 }
 
+// Funktion för att kontrollera om det finns recept att visa
 function checkRecipes(data) {
     if (data.recipes.length === 0) { // Kontrollerar om inga recept hittades
         messageContainer.textContent = "Inget recept hittades, prova en ny sökfras ...";
     } else {
         displayRecipe(data); // Anropar funktionen för att visa resultaten
-        console.log("Recept hittades:", data.recipes); // Loggar de hittade recepten
     }
 }
 
+// Funktion för att visa receptet i DOM
 function displayRecipe(data) {
     const recipe = data.recipes[0]; // Sparar det första receptet i en variabel
     recipeContainer.innerHTML = `<article>
@@ -80,8 +81,7 @@ searchForm.addEventListener("submit", (event) => {
     messageContainer.textContent = "";
     // - validera inmatnignen
     if (validateForm()) {
-        // - om valideringen lyckas
-        console.log("Formuläret är giltigt.");
+        // - om valideringen lyckas kör funktionen för att hämta receptet
         fetchRecipe();
     };
 });
